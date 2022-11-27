@@ -10,9 +10,9 @@ public enum Token_Class
     T_Number, T_String_Literal, T_Identifier,
 
     //Operators
-    T_PlusOP, T_MinusOP, T_MulitplyOP, T_DivideOP, T_AssignOP, T_EqualOP,
+    T_PlusOP, T_MinusOP, T_MulitplyOP, T_DivideOP, T_AssignOP, T_EqualOP, T_NotEqualOP,
     T_AndOP, T_OrOP, T_GreaterThanOP, T_SmallerThanOP, T_NotOP, 
-    T_Semicolon, T_Dot, T_Comma, T_RightCurlyBrackets, T_LeftCurlyBrackets, T_RightParentheses, T_LeftParentheses,
+    T_Semicolon, T_Dot, T_Comma, T_RightBracket, T_LeftBracket, T_LeftBrace, T_RightBrace, T_RightParentheses, T_LeftParentheses,
 
 
     //Reserved words
@@ -57,10 +57,13 @@ namespace Tiny_Compiler
             Operators.Add(",", Token_Class.T_Comma);
             Operators.Add("(", Token_Class.T_LeftParentheses);
             Operators.Add(")", Token_Class.T_RightParentheses);
-            Operators.Add("{", Token_Class.T_LeftCurlyBrackets);
-            Operators.Add("}", Token_Class.T_RightCurlyBrackets);
+            Operators.Add("[", Token_Class.T_LeftBracket);
+            Operators.Add("]", Token_Class.T_RightBracket);
+            Operators.Add("{", Token_Class.T_LeftBrace);
+            Operators.Add("}", Token_Class.T_RightBrace);
             Operators.Add(">", Token_Class.T_GreaterThanOP);
             Operators.Add("<", Token_Class.T_SmallerThanOP);
+            Operators.Add("<>", Token_Class.T_NotEqualOP);
             Operators.Add("!", Token_Class.T_NotOP);
             Operators.Add("–", Token_Class.T_MinusOP);
             Operators.Add("+", Token_Class.T_PlusOP);

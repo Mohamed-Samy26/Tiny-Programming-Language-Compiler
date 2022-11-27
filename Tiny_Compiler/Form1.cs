@@ -72,45 +72,6 @@ namespace Tiny_Compiler
 
 
 
-
-        //Extra code for design purposes only (custom titlebar)
-
-        //For moving the form from the panel on top and
-        public const int WM_NCLBUTTONDOWN = 0xA1;
-        public const int HT_CAPTION = 0x2;
-
-        [DllImportAttribute("user32.dll")]
-        public static extern int SendMessage(IntPtr hWnd, int Msg, int wParam, int lParam);
-
-        [DllImportAttribute("user32.dll")]
-        public static extern bool ReleaseCapture();
-        public void Move_Form(IntPtr Handle, MouseEventArgs e)
-        {
-            if (e.Button == MouseButtons.Left)
-            {
-                ReleaseCapture();
-                SendMessage(Handle, WM_NCLBUTTONDOWN, HT_CAPTION, 0);
-            }
-        }
-
-
-        private void btnMin_Click(object sender, EventArgs e)
-        {
-            this.WindowState = FormWindowState.Minimized;
-
-        }
-
-        private void btnExit_Click(object sender, EventArgs e)
-        {
-            Application.Exit();
-
-        }
-
-        private void panel1_MouseMove(object sender, MouseEventArgs e)
-        {
-            Move_Form(Handle, e);
-
-        }
         /*  void PrintLexemes()
 {
 for (int i = 0; i < Tiny_Compiler.Lexemes.Count; i++)
