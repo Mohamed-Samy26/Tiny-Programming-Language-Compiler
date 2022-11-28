@@ -283,7 +283,7 @@ namespace Tiny_Compiler
             //Is it an undefined?
             else
             {
-                Errors.Error_List.Add("Unknown token: "+ Lex);
+                Errors.Error_List.Add("Unrecognized token: " + Lex);
             }
         }
 
