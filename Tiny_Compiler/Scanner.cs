@@ -74,8 +74,8 @@ namespace Tiny_Compiler
             Operators.Add("/", Token_Class.T_DivideOP);
             Operators.Add("||", Token_Class.T_OrOP);
             Operators.Add("&&", Token_Class.T_AndOP);
-            Operators.Add(":=", Token_Class.T_EqualOP);
-            Operators.Add("=", Token_Class.T_AssignOP);
+            Operators.Add(":=", Token_Class.T_AssignOP);
+            Operators.Add("=", Token_Class.T_EqualOP);
         }
 
         public void StartScanning(string SourceCode)
@@ -89,29 +89,12 @@ namespace Tiny_Compiler
                 if (CurrentChar == ' ' || CurrentChar == '\r' || CurrentChar == '\n') //Whitespace
                     continue;
 
-                if (CurrentChar >= 'A' && CurrentChar <= 'z') //Identifier lexeme
+                if (SourceCode[j] >= '0' && SourceCode[j] <= '9' || SourceCode[j] == '.' || SourceCode[j] >= 'A' && SourceCode[j] <= 'z') //Identifier lexeme
                 {
                     j++;
                     while (j < SourceCode.Length)
                     {
-                        if (SourceCode[j] >= '0' && SourceCode[j] <= '9' || SourceCode[j] >= 'A' && SourceCode[j] <= 'z')
-                        {
-                            CurrentLexeme += SourceCode[j].ToString();
-                        }
-                        else { break; }
-                        j++;
-                    }
-                    FindTokenClass(CurrentLexeme);
-                    i = j - 1;
-                    continue;
-                }
-
-                else if (CurrentChar >= '0' && CurrentChar <= '9' || CurrentChar == '+' || CurrentChar == '-') //Number lexeme
-                {
-                    j++;
-                    while (j < SourceCode.Length)
-                    {
-                        if (SourceCode[j] >= '0' && SourceCode[j] <= '9' || SourceCode[j] == '.')
+                        if (SourceCode[j] >= '0' && SourceCode[j] <= '9' || SourceCode[j] == '.' || SourceCode[j] >= 'A' && SourceCode[j] <= 'z')
                         {
                             CurrentLexeme += SourceCode[j].ToString();
                         }
@@ -135,32 +118,6 @@ namespace Tiny_Compiler
                         }
                     }
                     FindTokenClass(CurrentLexeme.Trim());
-                    i = j - 1;
-                    continue;
-                }
-                else if (CurrentChar >= '0' && CurrentChar <= '9' || CurrentChar == '-' || CurrentChar == '+') //Number lexeme
-                {
-                    if (CurrentChar == '-' && j>0)
-                    {
-                        CurrentLexeme += SourceCode[j].ToString();
-                        if ((SourceCode[j-1] >= '0' && SourceCode[j-1] <= '9'
-                            || SourceCode[j-1] >= 'A' && SourceCode[j-1] <= 'z'))
-                        {
-                            FindTokenClass(CurrentLexeme);
-                            continue;
-                        }
-                    }
-                    j++;
-                    while (j < SourceCode.Length)
-                    {
-                        if (SourceCode[j] >= '0' && SourceCode[j] <= '9' || SourceCode[j] == '.')
-                        {
-                            CurrentLexeme += SourceCode[j].ToString();
-                        }
-                        else { break; }
-                        j++;
-                    }
-                    FindTokenClass(CurrentLexeme);
                     i = j - 1;
                     continue;
                 }
