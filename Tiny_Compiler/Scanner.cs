@@ -125,13 +125,13 @@ namespace Tiny_Compiler
                     {
                         CurrentLexeme += SourceCode[j].ToString();
                         j++;
-                        if (SourceCode[j - 1] == '"') 
+                        if ((SourceCode[j - 1] == ' ' || SourceCode[j - 1] == '\r' || SourceCode[j - 1] == '\n'))
                         {
                             break;
                         }
              
                     }
-                    FindTokenClass(CurrentLexeme);
+                    FindTokenClass(CurrentLexeme.Trim());
                     i = j - 1;
                 }
                 else if (CurrentChar == '/') //Comment lexeme to disregard
@@ -235,7 +235,7 @@ namespace Tiny_Compiler
         {
             // Check if the lex is an identifier or not.
 
-            if (lex[0] >= 'A' && lex[0] <= 'z') 
+            if ((lex[0] >= 'A' && lex[0] <= 'z') || lex[0] == '_') 
             {
                 for (int i = 1; i < lex.Length; i++)
                 {
@@ -264,12 +264,34 @@ namespace Tiny_Compiler
 
         bool isStringLiteral(string lex)
         {
-            bool isValid = false;
             // Check if the lex is a String Literal or not.
-            if (lex[0] == '"' && lex[lex.Length-1] == '"' && lex.Length > 1)  isValid = true;
-       
 
-            return isValid;
+            if (lex[0] == '"')
+            {
+                for (int i = 1; i < lex.Length - 1; i++)
+                {
+                    if (lex[i] == '"')
+                    {
+                        return false;
+                    }
+                }
+                if (lex[lex.Length - 1] == '"' && lex.Length > 1)
+                {
+                    return true;
+                }
+                else {
+                    return false;
+                }
+            }
+            else 
+            {
+                return false;
+            }
+
+
+            //bool isValid = false;
+            //if (lex[0] == '"' && lex[lex.Length-1] == '"' && lex.Length > 1)  isValid = true;
+            //return isValid;
             
         }
     }
