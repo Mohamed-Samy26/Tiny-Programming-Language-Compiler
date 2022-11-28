@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 public enum Token_Class
 {
@@ -52,7 +54,7 @@ namespace Tiny_Compiler
             ReservedWords.Add("end", Token_Class.T_End);
 
 
-            Operators.Add(".", Token_Class.T_Dot);
+            //Operators.Add(".", Token_Class.T_Dot);
             Operators.Add(";", Token_Class.T_Semicolon);
             Operators.Add(",", Token_Class.T_Comma);
             Operators.Add("(", Token_Class.T_LeftParentheses);
@@ -65,6 +67,7 @@ namespace Tiny_Compiler
             Operators.Add("<", Token_Class.T_SmallerThanOP);
             Operators.Add("<>", Token_Class.T_NotEqualOP);
             Operators.Add("!", Token_Class.T_NotOP);
+            Operators.Add("-", Token_Class.T_MinusOP);
             Operators.Add("–", Token_Class.T_MinusOP);
             Operators.Add("+", Token_Class.T_PlusOP);
             Operators.Add("*", Token_Class.T_MulitplyOP);
@@ -103,12 +106,12 @@ namespace Tiny_Compiler
                     i = j - 1;
                 }
 
-                else if (CurrentChar >= '0' && CurrentChar <= '9') //Number lexeme
+                else if (CurrentChar >= '0' && CurrentChar <= '9' || CurrentChar == '+' || CurrentChar == '-') //Number lexeme
                 {
                     j++;
                     while (j < SourceCode.Length)
                     {
-                        if (SourceCode[j] >= '0' && SourceCode[j] <= '9')
+                        if (SourceCode[j] >= '0' && SourceCode[j] <= '9' || SourceCode[j] == '.')
                         {
                             CurrentLexeme += SourceCode[j].ToString();
                         }
@@ -125,7 +128,7 @@ namespace Tiny_Compiler
                     {
                         CurrentLexeme += SourceCode[j].ToString();
                         j++;
-                        if ((SourceCode[j - 1] == ' ' || SourceCode[j - 1] == '\r' || SourceCode[j - 1] == '\n'))
+                        if (SourceCode[j - 1] == '"')
                         {
                             break;
                         }
@@ -172,11 +175,29 @@ namespace Tiny_Compiler
                     if (CurrentChar == ':')
                     {
                         j++;
-                        if (SourceCode[j] == '=')
+                        if (j< SourceCode.Length && SourceCode[j] == '=')
                         {
-                            CurrentLexeme += '=';
+                            CurrentLexeme += SourceCode[j];
                         }
                         
+                    }
+                    else if (CurrentChar == '<')
+                    {
+                        j++;
+                        if (j < SourceCode.Length && SourceCode[j] == '>' || SourceCode[j] == '=')
+                        {
+                            CurrentLexeme += SourceCode[j];
+                        }
+
+                    }
+                    else if (CurrentChar == '>')
+                    {
+                        j++;
+                        if (j < SourceCode.Length && SourceCode[j] == '=')
+                        {
+                            CurrentLexeme += SourceCode[j];
+                        }
+
                     }
 
                     FindTokenClass(CurrentLexeme);
@@ -239,59 +260,88 @@ namespace Tiny_Compiler
             {
                 for (int i = 1; i < lex.Length; i++)
                 {
-                    if (!(lex[i] >= 0 && lex[i] <= 9 || lex[i] >= 'A' && lex[i] <= 'z')) return false;
+                    if ((lex[i] >= '0' && lex[i] <= '9' || (lex[i] >= 'A' && lex[i] <= 'z'))) continue;
+                    else return false;
                 }
+                return true;
             }
             else 
             {
                 return false;
             }
-       
-
-            return true;
-
+    
 
         }
         bool isNumber(string lex)
         {
-            for (int i = 0; i < lex.Length; i++)
+            bool isValid = false;
+
+            if (lex[0] == '+' || lex[0] == '-' ) // +, - are optional and they are accepted
             {
-                if (!(lex[i] >= '0' && lex[i] <= '9')) return false;
+               lex = lex.Substring(1,lex.Length-1);
             }
 
-            return true;
+            if (lex.Length > 0 && (lex[0] >= '0' && lex[0] <= '9')) //starts with a digit
+            {
+                isValid = true;
+                for (int i = 1; i < lex.Length; i++)
+                {
+                    if ((lex[i] >= '0' && lex[i] <='9'))
+                    {
+                        continue;
+                    }
+                    else if (lex[i] == '.')
+                    {
+                        for (int j = i+1; j < lex.Length; j++)
+                        {
+                            if ((lex[j] >= '0' && lex[j] <= '9'))
+                            {
+                                continue;
+                            }
+                            else
+                            {
+                                return false;
+                            }
+                        }
+                        return true;
+                    }
+                    else
+                    {
+                        return false;
+                    }
+                }
+                return true;
+            }
+            else 
+            {
+                return false;
+            }
+            
         }
 
         bool isStringLiteral(string lex)
         {
             // Check if the lex is a String Literal or not.
 
-            if (lex[0] == '"')
+            if (lex[0] == '"' && lex.Length > 1)
             {
-                for (int i = 1; i < lex.Length - 1; i++)
+                for (int i = 1; i < lex.Length; i++)
                 {
                     if (lex[i] == '"')
                     {
-                        return false;
+                        for (int j = i + 1; j < lex.Length; j++)
+                        { 
+                            if(lex[j] == '"') return false;
+                        }
+                        return true;
                     }
                 }
-                if (lex[lex.Length - 1] == '"' && lex.Length > 1)
-                {
-                    return true;
-                }
-                else {
-                    return false;
-                }
+                return false;
             }
             else 
             {
                 return false;
             }
-
-
-            //bool isValid = false;
-            //if (lex[0] == '"' && lex[lex.Length-1] == '"' && lex.Length > 1)  isValid = true;
-            //return isValid;
             
         }
     }

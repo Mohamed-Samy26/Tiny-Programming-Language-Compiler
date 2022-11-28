@@ -144,9 +144,9 @@
             this.label2.Location = new System.Drawing.Point(698, 704);
             this.label2.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(107, 15);
+            this.label2.Size = new System.Drawing.Size(197, 15);
             this.label2.TabIndex = 5;
-            this.label2.Text = "Error List";
+            this.label2.Text = "Unrecognized Tokens";
             // 
             // button2
             // 
