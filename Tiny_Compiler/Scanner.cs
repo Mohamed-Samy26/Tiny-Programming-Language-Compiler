@@ -72,11 +72,10 @@ namespace Tiny_Compiler
             Operators.Add("+", Token_Class.T_PlusOP);
             Operators.Add("*", Token_Class.T_MulitplyOP);
             Operators.Add("/", Token_Class.T_DivideOP);
+            Operators.Add("||", Token_Class.T_OrOP);
+            Operators.Add("&&", Token_Class.T_AndOP);
             Operators.Add(":=", Token_Class.T_EqualOP);
             Operators.Add("=", Token_Class.T_AssignOP);
-
-
-
         }
 
         public void StartScanning(string SourceCode)
@@ -104,6 +103,7 @@ namespace Tiny_Compiler
                     }
                     FindTokenClass(CurrentLexeme);
                     i = j - 1;
+                    continue;
                 }
 
                 else if (CurrentChar >= '0' && CurrentChar <= '9' || CurrentChar == '+' || CurrentChar == '-') //Number lexeme
@@ -120,6 +120,7 @@ namespace Tiny_Compiler
                     }
                     FindTokenClass(CurrentLexeme);
                     i = j - 1;
+                    continue;
                 }
                 else if (CurrentChar == '"') //String literal lexeme
                 {
@@ -132,80 +133,154 @@ namespace Tiny_Compiler
                         {
                             break;
                         }
-             
                     }
                     FindTokenClass(CurrentLexeme.Trim());
                     i = j - 1;
+                    continue;
+                }
+                else if (CurrentChar >= '0' && CurrentChar <= '9' || CurrentChar == '-' || CurrentChar == '+') //Number lexeme
+                {
+                    if (CurrentChar == '-' && j>0)
+                    {
+                        CurrentLexeme += SourceCode[j].ToString();
+                        if ((SourceCode[j-1] >= '0' && SourceCode[j-1] <= '9'
+                            || SourceCode[j-1] >= 'A' && SourceCode[j-1] <= 'z'))
+                        {
+                            FindTokenClass(CurrentLexeme);
+                            continue;
+                        }
+                    }
+                    j++;
+                    while (j < SourceCode.Length)
+                    {
+                        if (SourceCode[j] >= '0' && SourceCode[j] <= '9' || SourceCode[j] == '.')
+                        {
+                            CurrentLexeme += SourceCode[j].ToString();
+                        }
+                        else { break; }
+                        j++;
+                    }
+                    FindTokenClass(CurrentLexeme);
+                    i = j - 1;
+                    continue;
+                }
+                else if (CurrentChar == '"') //String literal lexeme
+                {
+                    j++;
+                    while (j < SourceCode.Length)
+                    {
+                        CurrentLexeme += SourceCode[j].ToString();
+                        j++;
+                        if (SourceCode[j - 1] == '"')
+                        {
+                            break;
+                        }
+
+                    }
+                    FindTokenClass(CurrentLexeme.Trim());
+                    i = j - 1;
+                    continue;
                 }
                 else if (CurrentChar == '/') //Comment lexeme to disregard
                 {
+                    bool closed = false;
                     j++;
                     if (j < SourceCode.Length && SourceCode[j] == '*')
                     {
                         CurrentLexeme += SourceCode[j].ToString();
                         j++;
-                        while (j < SourceCode.Length && SourceCode[j] != '*')
+                        try
                         {
-                            CurrentLexeme += SourceCode[j].ToString();
-                            j++;
+                            while (j < SourceCode.Length)
+                            {
+                                CurrentLexeme += SourceCode[j].ToString();
+                                j++;
+                                if (SourceCode[j - 1] == '*' && SourceCode[j] == '/')
+                                {
+                                    CurrentLexeme += SourceCode[j].ToString();
+                                    closed = true;
+                                    break;
+                                }
+                            }
                         }
-                        CurrentLexeme += "*";
-                        j++;
-                        if (j < SourceCode.Length && SourceCode[j] == '/')
+                        catch (Exception)
                         {
-                            CurrentLexeme += SourceCode[j].ToString();
-                            j++;
+                            Errors.Error_List.Add("Comment not closed");
+                            closed = true;
+                            continue;
                         }
+                        if (!closed)
+                        {
+                            Errors.Error_List.Add("Comment not closed");
+                            continue;
+                        }
+
                     }
                     else
                     {
                         //Division Operator:
                         FindTokenClass(CurrentLexeme);
+                        continue;
                     }
-                    
-               
                     //FindTokenClass(CurrentLexeme);
-                    i = j - 1;
-                   
-                }
-
-                else //Operators lexeme
-                {
-                    //To handle assignment operator, because it is the only OP with two characters
-                    if (CurrentChar == ':')
-                    {
-                        j++;
-                        if (j< SourceCode.Length && SourceCode[j] == '=')
-                        {
-                            CurrentLexeme += SourceCode[j];
-                        }
-                        
-                    }
-                    else if (CurrentChar == '<')
-                    {
-                        j++;
-                        if (j < SourceCode.Length && SourceCode[j] == '>' || SourceCode[j] == '=')
-                        {
-                            CurrentLexeme += SourceCode[j];
-                        }
-
-                    }
-                    else if (CurrentChar == '>')
-                    {
-                        j++;
-                        if (j < SourceCode.Length && SourceCode[j] == '=')
-                        {
-                            CurrentLexeme += SourceCode[j];
-                        }
-
-                    }
-
-                    FindTokenClass(CurrentLexeme);
                     i = j;
                 }
+                //To handle assignment operator, because it is the only OP with two characters
+                else if(CurrentChar == ':')
+                {
+                    j++;
+                    if (j < SourceCode.Length && SourceCode[j] == '=')
+                    {
+                        CurrentLexeme += SourceCode[j];
+                    }
+
+                }
+                else if (CurrentChar == '<')
+                {
+                    j++;
+                    if (j < SourceCode.Length && SourceCode[j] == '>' || SourceCode[j] == '=')
+                    {
+                        CurrentLexeme += SourceCode[j];
+                    }
+
+                }
+                else if (CurrentChar == '>')
+                {
+                    j++;
+                    if (j < SourceCode.Length && SourceCode[j] == '=')
+                    {
+                        CurrentLexeme += SourceCode[j];
+                    }
+
+                }
+                else
+                {
+                    if (Operators.ContainsKey(CurrentLexeme))
+                    {
+                        FindTokenClass(CurrentLexeme);
+                        continue;
+                    }
+                    else
+                    {
+                        j++;
+                        while (j < SourceCode.Length)
+                        {
+                            if (!(SourceCode[j] == ' ' || SourceCode[j] == '\r' || SourceCode[j] == '\n'))
+                            {
+                                CurrentLexeme += SourceCode[j];
+                                j++;
+                            }
+                            else { break; }
+                        }
+                    }
+
+                }
+                FindTokenClass(CurrentLexeme.Trim());
+                i = j;
             }
 
             Tiny_Compiler.TokenStream = Tokens;
+
         }
         void FindTokenClass(string Lex)
         {
@@ -243,10 +318,15 @@ namespace Tiny_Compiler
                 Tok.token_type = Operators[Lex];
                 Tokens.Add(Tok);
             }
+            else if (Lex[0] == '/' && Lex[1] == '*' 
+                && Lex[Lex.Length - 2] == '*' && Lex[Lex.Length -1] == '/')
+            {
+               //Do Noting
+            }
             //Is it an undefined?
             else
             {
-                Errors.Error_List.Add(Lex);
+                Errors.Error_List.Add("Unknown token: "+ Lex);
             }
         }
 

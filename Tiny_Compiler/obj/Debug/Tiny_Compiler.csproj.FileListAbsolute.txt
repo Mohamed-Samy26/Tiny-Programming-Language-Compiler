@@ -46,3 +46,15 @@ D:\Education\College FCIS\Courses\5th semester\CS\Compiler\Project\Banana Compil
 D:\Education\College FCIS\Courses\5th semester\CS\Compiler\Project\Banana Compiler\Tiny_Compiler\obj\Debug\Tiny_Compiler.csproj.CoreCompileInputs.cache
 D:\Education\College FCIS\Courses\5th semester\CS\Compiler\Project\Banana Compiler\Tiny_Compiler\obj\Debug\JASON_Compiler.exe
 D:\Education\College FCIS\Courses\5th semester\CS\Compiler\Project\Banana Compiler\Tiny_Compiler\obj\Debug\JASON_Compiler.pdb
+D:\FCIS\Year3\Compilers\Tiny_Compiler\Tiny-Programming-Language-Compiler\Tiny_Compiler\bin\Debug\Tiny_Compiler.exe.config
+D:\FCIS\Year3\Compilers\Tiny_Compiler\Tiny-Programming-Language-Compiler\Tiny_Compiler\bin\Debug\Tiny_Compiler.exe
+D:\FCIS\Year3\Compilers\Tiny_Compiler\Tiny-Programming-Language-Compiler\Tiny_Compiler\bin\Debug\Tiny_Compiler.pdb
+D:\FCIS\Year3\Compilers\Tiny_Compiler\Tiny-Programming-Language-Compiler\Tiny_Compiler\obj\Debug\Tiny_Compiler.csproj.AssemblyReference.cache
+D:\FCIS\Year3\Compilers\Tiny_Compiler\Tiny-Programming-Language-Compiler\Tiny_Compiler\obj\Debug\Tiny_Compiler.csproj.SuggestedBindingRedirects.cache
+D:\FCIS\Year3\Compilers\Tiny_Compiler\Tiny-Programming-Language-Compiler\Tiny_Compiler\obj\Debug\Tiny_Compiler.Form1.resources
+D:\FCIS\Year3\Compilers\Tiny_Compiler\Tiny-Programming-Language-Compiler\Tiny_Compiler\obj\Debug\Tiny_Compiler.Form2.resources
+D:\FCIS\Year3\Compilers\Tiny_Compiler\Tiny-Programming-Language-Compiler\Tiny_Compiler\obj\Debug\Tiny_Compiler.Properties.Resources.resources
+D:\FCIS\Year3\Compilers\Tiny_Compiler\Tiny-Programming-Language-Compiler\Tiny_Compiler\obj\Debug\Tiny_Compiler.csproj.GenerateResource.cache
+D:\FCIS\Year3\Compilers\Tiny_Compiler\Tiny-Programming-Language-Compiler\Tiny_Compiler\obj\Debug\Tiny_Compiler.csproj.CoreCompileInputs.cache
+D:\FCIS\Year3\Compilers\Tiny_Compiler\Tiny-Programming-Language-Compiler\Tiny_Compiler\obj\Debug\Tiny_Compiler.exe
+D:\FCIS\Year3\Compilers\Tiny_Compiler\Tiny-Programming-Language-Compiler\Tiny_Compiler\obj\Debug\Tiny_Compiler.pdb
