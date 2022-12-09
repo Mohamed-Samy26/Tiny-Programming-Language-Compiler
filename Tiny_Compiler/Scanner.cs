@@ -156,6 +156,7 @@ namespace Tiny_Compiler
                                 {
                                     CurrentLexeme += SourceCode[j].ToString();
                                     closed = true;
+                                    i = j;
                                     break;
                                 }
                             }
@@ -164,11 +165,13 @@ namespace Tiny_Compiler
                         {
                             Errors.Error_List.Add("Comment not closed");
                             closed = true;
+                            i = j;
                             continue;
                         }
                         if (!closed)
                         {
                             Errors.Error_List.Add("Comment not closed");
+                            i = j;
                             continue;
                         }
 
@@ -293,7 +296,7 @@ namespace Tiny_Compiler
         {
             // Check if the lex is an identifier or not.
 
-            if ((lex[0] >= 'A' && lex[0] <= 'z') || lex[0] == '_') 
+            if (((lex[0] >= 'A' && lex[0] <= 'Z') || (lex[0] >= 'a' && lex[0] <= 'z') || lex[0] == '_')) 
             {
                 for (int i = 1; i < lex.Length; i++)
                 {
@@ -329,18 +332,27 @@ namespace Tiny_Compiler
                     }
                     else if (lex[i] == '.')
                     {
-                        for (int j = i+1; j < lex.Length; j++)
+                        i++;
+                        if (i < lex.Length && lex[i] >= '0' && lex[i] <= '9')
                         {
-                            if ((lex[j] >= '0' && lex[j] <= '9'))
+                            for (int j = i + 1; j < lex.Length; j++)
                             {
-                                continue;
+                                if ((lex[j] >= '0' && lex[j] <= '9'))
+                                {
+                                    continue;
+                                }
+                                else
+                                {
+                                    return false;
+                                }
                             }
-                            else
-                            {
-                                return false;
-                            }
+                            return true;
                         }
-                        return true;
+                        else {
+                            return false;
+
+                        }
+                        
                     }
                     else
                     {
