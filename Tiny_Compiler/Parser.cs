@@ -130,7 +130,7 @@ namespace Tiny_Compiler
                 inputPointer = InputPointer;
             if (inputPointer < TokenStream.Count)
             {
-                Errors.Error_List.Add("Parsing Error: Expected "
+                Errors.Error_List.Add("#### Parsing Error: Expected "
                             + Expected + " and " +
                             TokenStream[inputPointer].token_type.ToString() +
                             "  found\r\n");
@@ -596,7 +596,15 @@ namespace Tiny_Compiler
             Node declarationStatement = new Node("Declaration Statement");
             declarationStatement.Children.Add(Datatype());
             declarationStatement.Children.Add(Identifiers());
-            declarationStatement.Children.Add(match(Token_Class.T_Semicolon));
+            if (TokenStream[InputPointer +1].token_type == Token_Class.T_Semicolon)
+            {
+                declarationStatement.Children.Add(match(Token_Class.T_Semicolon));
+            }
+            else
+            {
+                declarationStatement.Children.Add(match(Token_Class.T_AssignOP));
+                declarationStatement.Children.Add(Expression());
+            }
             return declarationStatement;
         }
 
