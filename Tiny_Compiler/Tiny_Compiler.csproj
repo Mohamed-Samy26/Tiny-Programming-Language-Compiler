@@ -79,6 +79,8 @@
       <DependentUpon>Form2.cs</DependentUpon>
     </Compile>
     <Compile Include="Tiny_Compiler.cs" />
+    <Compile Include="Parser.cs" />
+    <Compile Include="Resource1.Designer.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Scanner.cs" />
