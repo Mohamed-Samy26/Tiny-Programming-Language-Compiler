@@ -13,12 +13,12 @@ public enum Token_Class
 
     //Operators
     T_PlusOP, T_MinusOP, T_MulitplyOP, T_DivideOP, T_AssignOP, T_EqualOP, T_NotEqualOP,
-    T_AndOP, T_OrOP, T_GreaterThanOP, T_SmallerThanOP, T_NotOP, 
+    T_AndOP, T_OrOP, T_GreaterThanOP, T_SmallerThanOP, T_NotOP,
     T_Semicolon, T_Dot, T_Comma, T_RightBracket, T_LeftBracket, T_LeftBrace, T_RightBrace, T_RightParentheses, T_LeftParentheses,
 
 
     //Reserved words
-    T_Int, T_Float, T_String, T_Read, T_Write, T_Repeat, T_Until, T_If, T_ElseIf, T_Else, T_Then, T_Return, T_End
+    T_Int, T_Main, T_Float, T_String, T_Read, T_Write, T_Repeat, T_Until, T_If, T_ElseIf, T_Else, T_Then, T_Return, T_End, T_Endl
 }
 namespace Tiny_Compiler
 {
@@ -51,7 +51,9 @@ namespace Tiny_Compiler
             ReservedWords.Add("else", Token_Class.T_Else);
             ReservedWords.Add("then", Token_Class.T_Then);
             ReservedWords.Add("return", Token_Class.T_Return);
+            ReservedWords.Add("main", Token_Class.T_Main);
             ReservedWords.Add("end", Token_Class.T_End);
+            ReservedWords.Add("endl", Token_Class.T_Endl);
 
 
             //Operators.Add(".", Token_Class.T_Dot);

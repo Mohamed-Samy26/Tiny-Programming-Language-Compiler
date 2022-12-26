@@ -55,6 +55,5 @@ namespace Tiny_Compiler
             treeView1.Nodes.Clear();
             Errors.Error_List.Clear();
         }
-        
     }
 }
