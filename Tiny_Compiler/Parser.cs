@@ -288,7 +288,287 @@ namespace Tiny_Compiler
             return exp;
         }
 
- 
+        private Node Equation()
+        {
+            Node equation = new Node("Equation");
+            equation.Children.Add(Factor());
+            equation.Children.Add(EquationD());
+            return equation;
+        }
+
+        private Node Factor()
+        {
+            Node factor = new Node("Factor");
+            if (InputPointer < TokenStream.Count && TokenStream[InputPointer].token_type == Token_Class.T_LeftParentheses)
+            {
+                factor.Children.Add(match(Token_Class.T_LeftParentheses));
+                factor.Children.Add(Equation());
+                factor.Children.Add(match(Token_Class.T_RightParentheses));
+                factor.Children.Add(FactorD());
+            }
+            else if (InputPointer < TokenStream.Count && isTerm(InputPointer))
+            {
+                factor.Children.Add(Term());
+                factor.Children.Add(FactorD());
+            }
+            else
+                printError("Factor");
+            return factor;
+        }
+
+        private Node Term()
+        {
+            Node term = new Node("Term");
+            if (InputPointer < TokenStream.Count && TokenStream[InputPointer].token_type == Token_Class.T_Number)
+            {
+                term.Children.Add(match(Token_Class.T_Number));
+            }
+            else if (InputPointer < TokenStream.Count && TokenStream[InputPointer].token_type == Token_Class.T_Identifier)
+            {
+                if (InputPointer + 1 < TokenStream.Count && TokenStream[InputPointer + 1].token_type == Token_Class.T_LeftParentheses)
+                {
+                    term.Children.Add(FunctionCall());
+                }
+                else
+                    term.Children.Add(match(Token_Class.T_Identifier));
+            }
+            else
+                printError("Term");
+            return term;
+        }
+
+        private Node FactorD()
+        {
+            Node factD = new Node("Factor'");
+            if (InputPointer < TokenStream.Count && isMultOp(InputPointer))
+            {
+                factD.Children.Add(MultOp());
+                factD.Children.Add(Equation());
+                factD.Children.Add(FactorD());
+                return factD;
+            }
+            else
+                return null;
+        }
+
+        private Node EquationD()
+        {
+            Node eqD = new Node("Equation'");
+            if (InputPointer < TokenStream.Count && isAddOp(InputPointer))
+            {
+                eqD.Children.Add(AddOp());
+                eqD.Children.Add(Factor());
+                eqD.Children.Add(EquationD());
+                return eqD;
+            }
+            else
+                return null;
+        }
+
+        private Node AddOp()
+        {
+            Node addOp = new Node("Add Operator");
+            if (InputPointer < TokenStream.Count && TokenStream[InputPointer].token_type ==  Token_Class.T_PlusOP)
+            {
+                addOp.Children.Add(match( Token_Class.T_PlusOP));
+            }
+            else if (InputPointer < TokenStream.Count && TokenStream[InputPointer].token_type ==  Token_Class.T_MinusOP)
+            {
+                addOp.Children.Add(match( Token_Class.T_MinusOP));
+            }
+            else
+                printError("Addition Operator");
+            return addOp;
+        }
+        private Node MultOp()
+        {
+            Node multOp = new Node("Mult Operator");
+            if (InputPointer < TokenStream.Count && TokenStream[InputPointer].token_type == Token_Class.T_MulitplyOP)
+            {
+                multOp.Children.Add(match(Token_Class.T_MulitplyOP));
+            }
+            else if (InputPointer < TokenStream.Count && TokenStream[InputPointer].token_type == Token_Class.T_DivideOP)
+            {
+                multOp.Children.Add(match(Token_Class.T_DivideOP));
+            }
+            else
+                printError("Multiply or Divide Operator");
+            return multOp;
+        }
+        private Node Statements()
+        {
+            Node statements = new Node("Statements");
+            if (InputPointer < TokenStream.Count && isStatement(InputPointer))
+            {
+                statements.Children.Add(Statement());
+                statements.Children.Add(StatementsD());
+                return statements;
+            }
+            else
+                return null;
+        }
+
+        private Node StatementsD()
+        {
+            Node statementD = new Node("Statements'");
+            if (InputPointer < TokenStream.Count && isStatement(InputPointer))
+            {
+                statementD.Children.Add(Statement());
+                statementD.Children.Add(StatementsD());
+                return statementD;
+            }
+            else
+                return null;
+        }
+
+        private Node Statement()
+        {
+            Node statement = new Node("Statement");
+            if (InputPointer < TokenStream.Count && TokenStream[InputPointer].token_type == Token_Class.T_Identifier)
+            {
+                // Assignment
+                if (InputPointer + 1 < TokenStream.Count && TokenStream[InputPointer + 1].token_type == Token_Class.T_AssignOP)
+                {
+                    statement.Children.Add(AssignmentStatment());
+                    statement.Children.Add(match(Token_Class.T_Semicolon));
+                }
+                //Condition
+                else if (InputPointer + 1 < TokenStream.Count && isConditionOp(InputPointer + 1))
+                {
+                    statement.Children.Add(ConditionStatement());
+                }
+                //Function Call
+                else if (InputPointer + 1 < TokenStream.Count && TokenStream[InputPointer + 1].token_type == Token_Class.T_LeftParentheses)
+                {
+                    statement.Children.Add(FunctionCall());
+                    statement.Children.Add(match(Token_Class.T_Semicolon));
+                }
+                else
+                    printError("Assignment or Condition or Function", InputPointer + 1);
+            }
+            // Declaration
+            else if (InputPointer < TokenStream.Count && isDatatype(InputPointer))
+            {
+                statement.Children.Add(DeclarationStatement());
+            }
+            else if (InputPointer < TokenStream.Count && TokenStream[InputPointer].token_type == Token_Class.T_Write)
+            {
+                statement.Children.Add(WriteStatement());
+            }
+            else if (InputPointer < TokenStream.Count && TokenStream[InputPointer].token_type == Token_Class.T_Read)
+            {
+                statement.Children.Add(ReadStatement());
+            }
+            else if (InputPointer < TokenStream.Count && TokenStream[InputPointer].token_type == Token_Class.T_If)
+            {
+                statement.Children.Add(IfStatement());
+            }
+            else if (InputPointer < TokenStream.Count && TokenStream[InputPointer].token_type == Token_Class.T_Repeat)
+            {
+                statement.Children.Add(RepeatStatement());
+            }
+            else
+                printError("Statement");
+            return statement;
+        }
+
+        private Node RepeatStatement()
+        {
+            Node repeatStatement = new Node("Repeat Statement");
+            repeatStatement.Children.Add(match(Token_Class.T_Repeat));
+            repeatStatement.Children.Add(Statements());
+            repeatStatement.Children.Add(match(Token_Class.T_Until));
+            repeatStatement.Children.Add(ConditionStatement());
+            return repeatStatement;
+        }
+
+        private Node IfStatement()
+        {
+            Node ifStatement = new Node("If Statement");
+            ifStatement.Children.Add(match(Token_Class.T_If));
+            ifStatement.Children.Add(ConditionStatement());
+            ifStatement.Children.Add(match(Token_Class.T_Then));
+            ifStatement.Children.Add(StatementsOrReturn());
+            ifStatement.Children.Add(RestIf());
+
+            return ifStatement;
+        }
+        private Node StatementsOrReturn()
+        {
+            Node statementsOrReturn = new Node("Statements Or Return");
+            if (InputPointer < TokenStream.Count && isStatement(InputPointer))
+            {
+                statementsOrReturn.Children.Add(Statements());
+                statementsOrReturn.Children.Add(StatementsOrReturn());
+                return statementsOrReturn;
+            }
+            else if (InputPointer < TokenStream.Count && TokenStream[InputPointer].token_type == Token_Class.T_Return)
+            {
+                statementsOrReturn.Children.Add(ReturnStatement());
+                return statementsOrReturn;
+            }
+            else
+                return null;
+        }
+        private Node RestIf()
+        {
+            Node restIf = new Node("Rest If");
+            if (InputPointer < TokenStream.Count && TokenStream[InputPointer].token_type == Token_Class.T_ElseIf)
+            {
+                restIf.Children.Add(ElseIfStatement());
+            }
+            else if (InputPointer < TokenStream.Count && TokenStream[InputPointer].token_type == Token_Class.T_Else)
+            {
+                restIf.Children.Add(ElseStatement());
+            }
+            else if (InputPointer < TokenStream.Count && TokenStream[InputPointer].token_type == Token_Class.T_End)
+            {
+                restIf.Children.Add(match(Token_Class.T_End));
+            }
+            else
+                printError("End");
+            return restIf;
+        }
+
+        private Node ElseStatement()
+        {
+            Node elseStatement = new Node("Else Statement");
+            elseStatement.Children.Add(match(Token_Class.T_Else));
+            elseStatement.Children.Add(StatementsOrReturn());
+            elseStatement.Children.Add(match(Token_Class.T_End));
+            return elseStatement;
+        }
+
+        private Node ElseIfStatement()
+        {
+            Node elseIfStatement = new Node("Else If Statement");
+            elseIfStatement.Children.Add(match(Token_Class.T_ElseIf));
+            elseIfStatement.Children.Add(ConditionStatement());
+            elseIfStatement.Children.Add(match(Token_Class.T_Then));
+            elseIfStatement.Children.Add(StatementsOrReturn());
+            elseIfStatement.Children.Add(RestIf());
+            return elseIfStatement;
+        }
+
+        private Node ReadStatement()
+        {
+            Node readStatement = new Node("Read Statement");
+            readStatement.Children.Add(match(Token_Class.T_Read));
+            readStatement.Children.Add(match(Token_Class.T_Identifier));
+            readStatement.Children.Add(match(Token_Class.T_Semicolon));
+            return readStatement;
+        }
+
+        private Node WriteStatement()
+        {
+            Node writeStatement = new Node("Write Statement");
+            writeStatement.Children.Add(match(Token_Class.T_Write));
+            writeStatement.Children.Add(WriteD());
+            writeStatement.Children.Add(match(Token_Class.T_Semicolon));
+            return writeStatement;
+        }
+
+      
 
         public static TreeNode PrintParseTree(Node root)
         {
