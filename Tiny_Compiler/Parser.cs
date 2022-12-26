@@ -40,9 +40,7 @@ namespace Tiny_Compiler
             {
                 InputPointer++;
                 Node newNode = new Node(ExpectedToken.ToString());
-
                 return newNode;
-
             }
 
             else
@@ -123,7 +121,7 @@ namespace Tiny_Compiler
         }
         private bool isExpression(int InputPointer)
         {
-            bool isString = TokenStream[InputPointer].token_type == Token_Class.T_String;
+            bool isString = TokenStream[InputPointer].token_type == Token_Class.T_String_Literal;
             return (isString || isEquation(InputPointer));
         }
         private void printError(string Expected, int inputPointer = -1)
@@ -275,9 +273,9 @@ namespace Tiny_Compiler
         private Node Expression()
         {
             Node exp = new Node("Expression");
-            if (InputPointer < TokenStream.Count && TokenStream[InputPointer].token_type == Token_Class.T_String)
+            if (InputPointer < TokenStream.Count && TokenStream[InputPointer].token_type == Token_Class.T_String_Literal)
             {
-                exp.Children.Add(match(Token_Class.T_String));
+                exp.Children.Add(match(Token_Class.T_String_Literal));
             }
             else if (InputPointer < TokenStream.Count && isEquation(InputPointer))
             {
