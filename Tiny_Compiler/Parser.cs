@@ -40,9 +40,7 @@ namespace Tiny_Compiler
             {
                 InputPointer++;
                 Node newNode = new Node(ExpectedToken.ToString());
-
                 return newNode;
-
             }
 
             else
@@ -598,7 +596,15 @@ namespace Tiny_Compiler
             Node declarationStatement = new Node("Declaration Statement");
             declarationStatement.Children.Add(Datatype());
             declarationStatement.Children.Add(Identifiers());
-            declarationStatement.Children.Add(match(Token_Class.T_Semicolon));
+            if (TokenStream[InputPointer +1].token_type == Token_Class.T_Semicolon)
+            {
+                declarationStatement.Children.Add(match(Token_Class.T_Semicolon));
+            }
+            else
+            {
+                declarationStatement.Children.Add(match(Token_Class.T_AssignOP));
+                declarationStatement.Children.Add(Expression());
+            }
             return declarationStatement;
         }
 
