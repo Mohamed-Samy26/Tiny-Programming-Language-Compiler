@@ -15,7 +15,7 @@ public enum Token_Class
     T_PlusOP, T_MinusOP, T_MulitplyOP, T_DivideOP, T_AssignOP, T_EqualOP, T_NotEqualOP,
     T_AndOP, T_OrOP, T_GreaterThanOP, T_SmallerThanOP, T_NotOP,
     T_Semicolon, T_Dot, T_Comma, T_RightBracket, T_LeftBracket, T_LeftBrace, T_RightBrace, T_RightParentheses, T_LeftParentheses,
-
+    T_GreaterThanOrEqualOP, T_SmallerThanOrEqualOP,
 
     //Reserved words
     T_Int, T_Main, T_Float, T_String, T_Read, T_Write, T_Repeat, T_Until, T_If, T_ElseIf, T_Else, T_Then, T_Return, T_End, T_Endl
@@ -66,6 +66,8 @@ namespace Tiny_Compiler
             Operators.Add("{", Token_Class.T_LeftBrace);
             Operators.Add("}", Token_Class.T_RightBrace);
             Operators.Add(">", Token_Class.T_GreaterThanOP);
+            Operators.Add(">=", Token_Class.T_GreaterThanOrEqualOP);
+            Operators.Add("<=", Token_Class.T_SmallerThanOrEqualOP);
             Operators.Add("<", Token_Class.T_SmallerThanOP);
             Operators.Add("<>", Token_Class.T_NotEqualOP);
             Operators.Add("!", Token_Class.T_NotOP);
@@ -123,23 +125,7 @@ namespace Tiny_Compiler
                     i = j - 1;
                     continue;
                 }
-                else if (CurrentChar == '"') //String literal lexeme
-                {
-                    j++;
-                    while (j < SourceCode.Length)
-                    {
-                        CurrentLexeme += SourceCode[j].ToString();
-                        j++;
-                        if (SourceCode[j - 1] == '"')
-                        {
-                            break;
-                        }
 
-                    }
-                    FindTokenClass(CurrentLexeme.Trim());
-                    i = j - 1;
-                    continue;
-                }
                 else if (CurrentChar == '/') //Comment lexeme to disregard
                 {
                     bool closed = false;
@@ -188,12 +174,12 @@ namespace Tiny_Compiler
                     i = j;
                 }
                 //To handle assignment operator, because it is the only OP with two characters
-                else if(CurrentChar == ':')
+                else if (CurrentChar == ':')
                 {
                     j++;
                     if (j < SourceCode.Length && SourceCode[j] == '=')
                     {
-                        CurrentLexeme += SourceCode[j];
+                        CurrentLexeme += SourceCode[j].ToString();
                     }
 
                 }
@@ -202,7 +188,11 @@ namespace Tiny_Compiler
                     j++;
                     if (j < SourceCode.Length && SourceCode[j] == '>' || SourceCode[j] == '=')
                     {
-                        CurrentLexeme += SourceCode[j];
+                        CurrentLexeme += SourceCode[j].ToString();
+               
+                    }
+                    else {
+                        j--;
                     }
 
                 }
@@ -211,7 +201,12 @@ namespace Tiny_Compiler
                     j++;
                     if (j < SourceCode.Length && SourceCode[j] == '=')
                     {
-                        CurrentLexeme += SourceCode[j];
+                        CurrentLexeme += SourceCode[j].ToString();
+             
+                    }
+                    else
+                    {
+                        j--;
                     }
 
                 }
@@ -234,6 +229,8 @@ namespace Tiny_Compiler
                             }
                             else { break; }
                         }
+
+
                     }
 
                 }

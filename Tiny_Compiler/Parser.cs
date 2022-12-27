@@ -40,7 +40,9 @@ namespace Tiny_Compiler
             {
                 InputPointer++;
                 Node newNode = new Node(ExpectedToken.ToString());
+
                 return newNode;
+
             }
 
             else
@@ -130,15 +132,19 @@ namespace Tiny_Compiler
                 inputPointer = InputPointer;
             if (inputPointer < TokenStream.Count)
             {
-                Errors.Error_List.Add(TokenStream[inputPointer].token_type.ToString() + " " + TokenStream[InputPointer].lex.ToString() + " Parsing Error: Expected "
+                Errors.Error_List.Add("Parsing Error: Expected "
                             + Expected + " and " +
                             TokenStream[inputPointer].token_type.ToString() +
                             "  found\r\n");
             }
             else
             {
-                Errors.Error_List.Add(TokenStream[inputPointer].token_type.ToString() + " " + TokenStream[InputPointer].lex.ToString() + " Parsing Error: Expected "
+                if (inputPointer < TokenStream.Count)
+                {
+                    Errors.Error_List.Add(TokenStream[inputPointer].token_type.ToString() + " " + TokenStream[InputPointer].lex.ToString() + " Parsing Error: Expected "
                             + Expected + " and found nothing\r\n");
+                }
+
             }
             InputPointer++;
         }
@@ -596,15 +602,7 @@ namespace Tiny_Compiler
             Node declarationStatement = new Node("Declaration Statement");
             declarationStatement.Children.Add(Datatype());
             declarationStatement.Children.Add(Identifiers());
-            if (TokenStream[InputPointer +1].token_type == Token_Class.T_Semicolon)
-            {
-                declarationStatement.Children.Add(match(Token_Class.T_Semicolon));
-            }
-            else
-            {
-                declarationStatement.Children.Add(match(Token_Class.T_AssignOP));
-                declarationStatement.Children.Add(Expression());
-            }
+            declarationStatement.Children.Add(match(Token_Class.T_Semicolon));
             return declarationStatement;
         }
 
