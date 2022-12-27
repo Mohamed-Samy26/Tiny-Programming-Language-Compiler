@@ -129,6 +129,7 @@
     <None Include="Resources\Banana_back1.png" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Resources\cute_square.gif" />
     <Content Include="Resources\Tiny_Icon.ico" />
   </ItemGroup>
   <ItemGroup>
