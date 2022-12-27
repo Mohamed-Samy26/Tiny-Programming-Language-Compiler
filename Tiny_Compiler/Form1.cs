@@ -29,6 +29,7 @@ namespace Tiny_Compiler
             Tiny_Compiler.Start_Compiling(Code);
             PrintTokens();
             //   PrintLexemes();
+            treeView1.Nodes.Clear();
             treeView1.Nodes.Add(Parser.PrintParseTree(Tiny_Compiler.treeroot));
             PrintErrors();
         }

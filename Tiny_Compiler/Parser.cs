@@ -64,12 +64,29 @@ namespace Tiny_Compiler
         }
     }
 
+        //Helper functions:
         private bool isDatatype(int InputPointer)
         {
             bool isInt = TokenStream[InputPointer].token_type == Token_Class.T_Int;
             bool isFloat = TokenStream[InputPointer].token_type == Token_Class.T_Float;
             bool isString = TokenStream[InputPointer].token_type == Token_Class.T_String;
             return (isInt || isFloat || isString);
+        }
+
+     
+        private bool isBooleanOp(int InputPointer)
+        {
+            bool isOr = TokenStream[InputPointer].token_type == Token_Class.T_OrOP;
+            bool isAnd = TokenStream[InputPointer].token_type == Token_Class.T_AndOP;
+            return (isAnd || isOr);
+        }
+        private bool isConditionOp(int InputPointer)
+        {
+            bool isLessThan = TokenStream[InputPointer].token_type == Token_Class.T_SmallerThanOP;
+            bool isGreaterThan = TokenStream[InputPointer].token_type == Token_Class.T_GreaterThanOP;
+            bool isEqual = TokenStream[InputPointer].token_type == Token_Class.T_EqualOP;
+            bool isNotEqual = TokenStream[InputPointer].token_type == Token_Class.T_NotEqualOP;
+            return (isEqual || isGreaterThan || isLessThan || isNotEqual);
         }
 
         private bool isStatement(int InputPointer)
@@ -82,21 +99,7 @@ namespace Tiny_Compiler
             bool isRepeat = TokenStream[InputPointer].token_type == Token_Class.T_Repeat;
             return (isDecleration || isWrite || isRead || isConditionOrFunctionCallOrAssignment || isIf || isRepeat);
         }
-        private bool isConditionOp(int InputPointer)
-        {
-            bool isLessThan = TokenStream[InputPointer].token_type == Token_Class.T_SmallerThanOP;
-            bool isGreaterThan = TokenStream[InputPointer].token_type == Token_Class.T_GreaterThanOP;
-            bool isEqual = TokenStream[InputPointer].token_type == Token_Class.T_EqualOP;
-            bool isNotEqual = TokenStream[InputPointer].token_type == Token_Class.T_NotEqualOP;
-            return (isEqual || isGreaterThan || isLessThan || isNotEqual);
-        }
-
-        private bool isBooleanOp(int InputPointer)
-        {
-            bool isOr = TokenStream[InputPointer].token_type == Token_Class.T_OrOP;
-            bool isAnd = TokenStream[InputPointer].token_type == Token_Class.T_AndOP;
-            return (isAnd || isOr);
-        }
+      
         private bool isTerm(int InputPointer)
         {
             bool isNumber = TokenStream[InputPointer].token_type == Token_Class.T_Number;
@@ -126,6 +129,10 @@ namespace Tiny_Compiler
             bool isString = TokenStream[InputPointer].token_type == Token_Class.T_String_Literal;
             return (isString || isEquation(InputPointer));
         }
+
+
+        //Errors management
+
         private void printError(string Expected, int inputPointer = -1)
         {
             if (inputPointer == -1)
@@ -136,15 +143,6 @@ namespace Tiny_Compiler
                             + Expected + " and " +
                             TokenStream[inputPointer].token_type.ToString() +
                             "  found\r\n");
-            }
-            else
-            {
-                if (inputPointer < TokenStream.Count)
-                {
-                    Errors.Error_List.Add(TokenStream[inputPointer].token_type.ToString() + " " + TokenStream[InputPointer].lex.ToString() + " Parsing Error: Expected "
-                            + Expected + " and found nothing\r\n");
-                }
-
             }
             InputPointer++;
         }
@@ -608,30 +606,30 @@ namespace Tiny_Compiler
 
         private Node Identifiers()
         {
-            Node ids = new Node("IDs");
+            Node identifiers = new Node("Identifiers");
             if (InputPointer + 1 < TokenStream.Count && (TokenStream[InputPointer + 1].token_type == Token_Class.T_Comma || TokenStream[InputPointer + 1].token_type == Token_Class.T_Semicolon))
             {
-                ids.Children.Add(match(Token_Class.T_Identifier));
-                ids.Children.Add(IdsD());
+                identifiers.Children.Add(match(Token_Class.T_Identifier));
+                identifiers.Children.Add(IdentifiersD());
             }
             else if (InputPointer + 1 < TokenStream.Count && TokenStream[InputPointer + 1].token_type == Token_Class.T_AssignOP)
             {
-                ids.Children.Add(AssignmentStatment());
-                ids.Children.Add(IdsD());
+                identifiers.Children.Add(AssignmentStatment());
+                identifiers.Children.Add(IdentifiersD());
             }
             else
                 printError("Identifiers");
-            return ids;
+            return identifiers;
         }
 
-        private Node IdsD()
+        private Node IdentifiersD()
         {
-            Node idsD = new Node("IDs'");
+            Node identifiersD = new Node("IDs'");
             if (InputPointer < TokenStream.Count && TokenStream[InputPointer].token_type == Token_Class.T_Comma)
             {
-                idsD.Children.Add(match(Token_Class.T_Comma));
-                idsD.Children.Add(Identifiers());
-                return idsD;
+                identifiersD.Children.Add(match(Token_Class.T_Comma));
+                identifiersD.Children.Add(Identifiers());
+                return identifiersD;
             }
             else
                 return null;
