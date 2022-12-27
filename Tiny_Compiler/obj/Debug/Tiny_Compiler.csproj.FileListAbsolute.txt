@@ -58,3 +58,15 @@ D:\Education\College FCIS\Courses\5th semester\CS\Compiler\Project\Tiny-Programm
 D:\Education\College FCIS\Courses\5th semester\CS\Compiler\Project\Tiny-Programming-Language-Compiler\Tiny_Compiler\obj\Debug\Tiny_Compiler.Properties.Resources.resources
 D:\Education\College FCIS\Courses\5th semester\CS\Compiler\Project\Tiny-Programming-Language-Compiler\Tiny_Compiler\obj\Debug\Tiny_Compiler.exe
 D:\Education\College FCIS\Courses\5th semester\CS\Compiler\Project\Tiny-Programming-Language-Compiler\Tiny_Compiler\obj\Debug\Tiny_Compiler.pdb
+D:\Education\College FCIS\Courses\5th semester\CS\Compiler\Project\backup\Tiny_Compiler\bin\Debug\Tiny_Compiler.exe.config
+D:\Education\College FCIS\Courses\5th semester\CS\Compiler\Project\backup\Tiny_Compiler\bin\Debug\Tiny_Compiler.exe
+D:\Education\College FCIS\Courses\5th semester\CS\Compiler\Project\backup\Tiny_Compiler\bin\Debug\Tiny_Compiler.pdb
+D:\Education\College FCIS\Courses\5th semester\CS\Compiler\Project\backup\Tiny_Compiler\obj\Debug\Tiny_Compiler.csproj.AssemblyReference.cache
+D:\Education\College FCIS\Courses\5th semester\CS\Compiler\Project\backup\Tiny_Compiler\obj\Debug\Tiny_Compiler.csproj.SuggestedBindingRedirects.cache
+D:\Education\College FCIS\Courses\5th semester\CS\Compiler\Project\backup\Tiny_Compiler\obj\Debug\Tiny_Compiler.Form1.resources
+D:\Education\College FCIS\Courses\5th semester\CS\Compiler\Project\backup\Tiny_Compiler\obj\Debug\Tiny_Compiler.Form2.resources
+D:\Education\College FCIS\Courses\5th semester\CS\Compiler\Project\backup\Tiny_Compiler\obj\Debug\Tiny_Compiler.Properties.Resources.resources
+D:\Education\College FCIS\Courses\5th semester\CS\Compiler\Project\backup\Tiny_Compiler\obj\Debug\Tiny_Compiler.csproj.GenerateResource.cache
+D:\Education\College FCIS\Courses\5th semester\CS\Compiler\Project\backup\Tiny_Compiler\obj\Debug\Tiny_Compiler.csproj.CoreCompileInputs.cache
+D:\Education\College FCIS\Courses\5th semester\CS\Compiler\Project\backup\Tiny_Compiler\obj\Debug\Tiny_Compiler.exe
+D:\Education\College FCIS\Courses\5th semester\CS\Compiler\Project\backup\Tiny_Compiler\obj\Debug\Tiny_Compiler.pdb
