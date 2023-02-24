@@ -1,8 +1,11 @@
 # Tiny Programming Language Compiler 🤏
 
- An implementation of Scanner and Parser for Tiny programming language
+ An implementation of Scanner and Parser for Tiny programming language, 
+ 
+ Langage's NFA constructed from [Regex](https://en.wikipedia.org/wiki/Regular_expression) using [Thompson Construction method](https://en.wikipedia.org/wiki/Thompson%27s_construction) and converted to DFA using [Subset / Powerset Construction method](https://en.wikipedia.org/wiki/Powerset_construction) and then minimized the DFA
 
  ![Screenshot](images/Screenshot.jpg)
+
 
 ## Language syntax and documentation
 
@@ -10,6 +13,7 @@
 - [DFA](docs/dfa.md)
 - [CFG](docs/Tiny_Language_CFG_Rules.md)
 - [Sample Codes](docs/samples.md)
+- Download [NFA Documentation pdf](docs/NFA_using_Thompson_Construction__221129_020353_1.pdf) or [DFA pdf](docs/DFA_and_Regex_for_TINY_language__221129_020437_1_2.pdf)
 
 ## Lexer "Scanner"
 
