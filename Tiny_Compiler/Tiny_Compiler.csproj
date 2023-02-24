@@ -78,6 +78,11 @@
     <Compile Include="Form2.Designer.cs">
       <DependentUpon>Form2.cs</DependentUpon>
     </Compile>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
     <Compile Include="Tiny_Compiler.cs" />
     <Compile Include="Parser.cs" />
     <Compile Include="Resource1.Designer.cs" />
@@ -92,14 +97,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <Compile Include="Properties\Resources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Resources.resx</DependentUpon>
-      <DesignTime>True</DesignTime>
-    </Compile>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -114,19 +114,10 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\Banana_back.jpg" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\Banana_back.png" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Resources\cross.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Minimize.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\Banana_back1.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\cute_square.gif" />
